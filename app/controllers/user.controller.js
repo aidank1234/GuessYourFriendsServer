@@ -1,19 +1,43 @@
 const db = require("../models");
 const User = db.user;
+const jwt = require('jsonwebtoken');
+const passwordHash = require('password-hash');
+
+// checks if a given User is authenticated and logged in
+exports.is_logged_in = function(req, res, next) {
+    if(req.user) {
+        next();
+    }
+    else {
+        return res.status(401).json({ message: 'Unauthorized user!' });
+    }
+};
 
 // Create and save a new User
 exports.create = (req, res) => {
+    console.log(req.body);
+
+    // Validate request
+    if(!req.body.username || !req.body.pass || !req.body.phoneNumber) {
+        res.status(400).send({message: "Content cannot be empty"});
+        return;
+    }
+
     // Create a User
     const user = new User({
-        deviceId: req.body.deviceId.toLowerCase()
+        username: req.body.username.toLowerCase(),
+        password: passwordHash.generate(req.body.pass),
+        phoneNumber: req.body.phoneNumber.toLowerCase()
     });
 
     // Save user in the database
     user
         .save(user)
         .then(data => {
-            // Return new user data
-            res.json({user: data});
+            // Remove sensitive information from response
+            data.password = undefined;
+            // Return new user data and jwt
+            res.json({user: data, token: jwt.sign({_id: user._id, username: user.username}, 'BadgerBytesServer')});
         })
         .catch(err => {
             res.status(500).send({
@@ -21,3 +45,44 @@ exports.create = (req, res) => {
             });
         });
 };
+
+// Logs a user in with either a username or email and a password. Gives back token if authenticated.
+exports.logIn = (req, res) => {
+    // Validate request
+    if(!req.body.username) {
+        res.status(400).send({message: "Content cannot be empty"});
+        return;
+    }
+    else if(!req.body.pass) {
+        res.status(400).send({message: "Content cannot be empty"});
+        return;
+    }
+
+    User.findOne({username: req.body.username})
+        .then(data => {
+            // User not found, cannot login
+            if(data == null) {
+                return res.status(401).send({
+                    message: "User not found"
+                });
+            }
+            // Validate password
+            if (!(passwordHash.verify(req.body.pass, data.password))) {
+                return res.status(401).send({
+                    message: "Incorrect password"
+                });
+            }
+            // Everything looks good, authenticate
+            // Remove sensitive information from response
+            data.password = undefined;
+            //Return user data and jwt
+            res.json({user: data, token: jwt.sign({_id: data._id, username: data.username}, 'BadgerBytesServer')})
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "An error occurred while logging in"
+            });
+        });
+};
+
+

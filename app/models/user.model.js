@@ -1,7 +1,9 @@
 module.exports = mongoose => {
     const userSchema = mongoose.Schema(
         {
-            deviceId: {type: String, unique: true, required: true}
+            username: {type: String, unique: true, required: true},
+            password: {type: String, unique: false, required: true},
+            phoneNumber: {type: String, unique: true, required: true}
         },
         {timestamps: true}
     );
