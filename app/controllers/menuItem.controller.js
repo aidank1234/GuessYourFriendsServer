@@ -19,6 +19,16 @@ exports.add_menu_item = (req, res) => {
         });
 };
 
+exports.get_all_menu_items = (req, res) => {
+  MenuItem.find({})
+      .then(data => {
+          res.json(data)
+      })
+      .catch(err => {
+          res.status(500).json({message: err.message || "Unable to get menu items"})
+      });
+};
+
 exports.update_item_with_name = (req, res) => {
     MenuItem.findOne({name: req.body.name}, (item) => {
 
