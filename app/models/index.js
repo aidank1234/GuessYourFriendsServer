@@ -10,5 +10,6 @@ db.mongoose.set('useFindAndModify', false);
 db.url = dbConfig.url;
 
 db.user = require('./user.model.js')(mongoose);
+db.menuItem = require('./menuItem.model')(mongoose);
 
 module.exports = db;
