@@ -18,7 +18,7 @@ exports.create = (req, res) => {
     console.log(req.body);
 
     // Validate request
-    if(!req.body.username || !req.body.pass || !req.body.phoneNumber) {
+    if(!req.body.username || !req.body.pass || !req.body.phoneNumber || !req.body.address) {
         res.status(400).send({message: "Content cannot be empty"});
         return;
     }
@@ -27,7 +27,8 @@ exports.create = (req, res) => {
     const user = new User({
         username: req.body.username.toLowerCase(),
         password: passwordHash.generate(req.body.pass),
-        phoneNumber: req.body.phoneNumber.toLowerCase()
+        phoneNumber: req.body.phoneNumber.toLowerCase(),
+        address: req.body.address.toLowerCase()
     });
 
     // Save user in the database
