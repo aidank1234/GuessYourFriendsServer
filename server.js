@@ -31,8 +31,7 @@ db.mongoose
 
 require("./app/routes/user.routes")(app);
 require("./app/routes/menuItem.routes")(app);
-// Commented out because compiling fails without controller
-// require("./app/routes/order.routes")(app);
+require("./app/routes/order.routes")(app);
 
 
 // set port, listen for requests
