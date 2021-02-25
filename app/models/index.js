@@ -11,5 +11,6 @@ db.url = dbConfig.url;
 
 db.user = require('./user.model.js')(mongoose);
 db.menuItem = require('./menuItem.model')(mongoose);
+db.order = require('./order.model')(mongoose);
 
 module.exports = db;

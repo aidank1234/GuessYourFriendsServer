@@ -2,10 +2,10 @@ const db = require("../models");
 const Order = db.order;
 
 exports.add_order = (req, res) => {
-    // Create a Menu Item
+    // Create a new Order
     const order = new Order({
         username: req.body.username.toLowerCase(),
-        menueItem: req.body.menueItem(),
+        menuItems: req.body.menuItems,
         cost: req.body.cost,
         pickUpTime: req.body.pickUpTime,
         car: req.body.car
@@ -20,9 +20,22 @@ exports.add_order = (req, res) => {
         });
 };
 
-exports.update_item_with_name = (req, res) => {
-    Order.findOne({ name: req.body.name }, (item) => {
-
-    });
+exports.get_orders_for_user = (req, res) => {
+    Order.find({username: req.body.username})
+        .then((data) => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.status(500).json({message: err.message || "There was a problem getting orders for user"})
+        })
 };
 
+exports.mark_order_complete = (req, res) => {
+    Order.updateOne({_id: req.body._id}, {
+        completed: true
+    }).then((order) => {
+        res.json(order);
+    }).catch(err => {
+        res.status(500).json({ message: err.message || "There was a problem marking order as completed" })
+    });
+};
