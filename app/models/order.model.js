@@ -3,7 +3,7 @@ module.exports = mongoose => {
         {
             username: { type: String, unique: false, required: true },
             menuItems: { type: Array, unique: false, required: true},
-            totalCost: { type: String, unique: false, required: true },
+            cost: { type: String, unique: false, required: true },
             pickUpTime: { type: String, unique: false, required: true },
             car: { type: String, unique: false, required: true },
             completed: { type: Boolean, unique: false, required: true, default: false }
