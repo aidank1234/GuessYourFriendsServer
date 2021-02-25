@@ -1,5 +1,5 @@
 const db = require("../models");
-const User = db.user;
+const User = db.adminUser;
 const jwt = require('jsonwebtoken');
 const passwordHash = require('password-hash');
 
@@ -8,7 +8,7 @@ exports.create = (req, res) => {
     console.log(req.body);
 
     // Validate request
-    if(!req.body.username || !req.body.pass || !req.body.phoneNumber || !req.body.address) {
+    if(!req.body.username || !req.body.pass) {
         res.status(400).send({message: "Content cannot be empty"});
         return;
     }
@@ -16,9 +16,7 @@ exports.create = (req, res) => {
     // Create a User
     const user = new User({
         username: req.body.username.toLowerCase(),
-        password: passwordHash.generate(req.body.pass),
-        phoneNumber: req.body.phoneNumber.toLowerCase(),
-        address: req.body.address.toLowerCase()
+        password: passwordHash.generate(req.body.pass)
     });
 
     // Save user in the database
