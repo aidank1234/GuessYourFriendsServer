@@ -6,7 +6,8 @@ module.exports = mongoose => {
             cost: { type: String, unique: false, required: true },
             pickUpTime: { type: String, unique: false, required: true },
             car: { type: String, unique: false, required: true },
-            completed: { type: Boolean, unique: false, required: true, default: false }
+            completed: { type: Boolean, unique: false, required: true, default: false },
+            highPriority: {type: Boolean, unique: false, required: true, default: false}
         },
         { timestamps: true }
     );

@@ -39,3 +39,13 @@ exports.mark_order_complete = (req, res) => {
         res.status(500).json({ message: err.message || "There was a problem marking order as completed" })
     });
 };
+
+exports.mark_order_high_priority = (req, res) => {
+    Order.updateOne({_id: req.body._id}, {
+        highPriority: true
+    }).then((order) => {
+        res.json(order);
+    }).catch(err => {
+        res.status(500).json({ message: err.message || "There was a problem marking order as high priority" })
+    });
+};

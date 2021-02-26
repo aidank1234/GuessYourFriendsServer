@@ -12,6 +12,9 @@ module.exports = app => {
     // Mark order with id complete
     router.post("/complete", order.mark_order_complete);
 
+    // Mark order with id as high priority
+    router.post("/priority", order.mark_order_high_priority);
+
 
     app.use('/api/order', router);
 };
