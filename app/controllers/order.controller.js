@@ -20,8 +20,8 @@ exports.add_order = (req, res) => {
         });
 };
 
-exports.get_orders_for_user = (req, res) => {
-    Order.find({username: req.body.username})
+exports.get_ongoing_orders = (req, res) => {
+    Order.find({completed: false})
         .then((data) => {
             res.json(data);
         })
