@@ -9,6 +9,9 @@ module.exports = app => {
     // Get all orders for user
     router.get("/", order.get_ongoing_orders);
 
+    // Gets all orders from the past
+    router.get("/all", order.get_all_orders);
+
     // Mark order with id complete
     router.post("/complete", order.mark_order_complete);
 

@@ -30,6 +30,16 @@ exports.get_ongoing_orders = (req, res) => {
         })
 };
 
+exports.get_all_orders = (req, res) => {
+    Order.find({})
+        .then((data) => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.status(500).json({message: err.message || "There was a problem getting orders for user"})
+        })
+};
+
 exports.mark_order_complete = (req, res) => {
     Order.updateOne({_id: req.body._id}, {
         completed: true
