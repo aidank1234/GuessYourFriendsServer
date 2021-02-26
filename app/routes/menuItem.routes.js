@@ -9,6 +9,9 @@ module.exports = app => {
     // Gets all menu items
     router.get("/", menuItem.get_all_menu_items);
 
+    // Updates menu item availability by name
+    router.put("/availability", menuItem.update_availability);
+
 
     app.use('/api/menuItem', router);
 };

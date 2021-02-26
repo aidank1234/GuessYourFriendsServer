@@ -29,11 +29,16 @@ exports.get_all_menu_items = (req, res) => {
       });
 };
 
-exports.update_item_with_name = (req, res) => {
-    MenuItem.findOne({name: req.body.name}, (item) => {
-
+exports.update_availability = (req, res) => {
+    MenuItem.updateOne({name: req.body.name}, {
+        available: req.body.available
+    }).then((item) => {
+        res.json(item);
+    }).catch(err => {
+       res.status(500).json({message: err.message || "There was a problem marking menu item available"})
     });
 };
+
 
 
 
